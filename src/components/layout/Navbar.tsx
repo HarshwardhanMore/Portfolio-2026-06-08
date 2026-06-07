@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { profile } from "@/data/profile";
 
 const links = [
@@ -54,9 +55,15 @@ export function Navbar() {
           </li>
         ))}
       </ul>
-      <a href={`mailto:${profile.email}`} className="nav-cta">
-        Say Hello →
-      </a>
+      <div className="nav-cta-group">
+        <Link to="/cli" className="nav-cli" aria-label="Open CLI mode">
+          <span>cli</span>
+          <kbd>~</kbd>
+        </Link>
+        <a href={`mailto:${profile.email}`} className="nav-cta">
+          Say Hello →
+        </a>
+      </div>
     </nav>
   );
 }
