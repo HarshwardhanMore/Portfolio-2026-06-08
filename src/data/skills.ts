@@ -1,50 +1,81 @@
-export type SkillGroup = {
-  heading: string;
-  dot: "accent" | "success" | "muted";
-  items: { name: string; level: string }[];
-};
+export type SkillTag = { name: string; core?: boolean };
+export type SkillGroup = { name: string; tags: SkillTag[] };
 
 export const skillGroups: SkillGroup[] = [
   {
-    heading: "Core Languages",
-    dot: "accent",
-    items: [
-      { name: "TypeScript / JavaScript", level: "Expert" },
-      { name: "SQL", level: "Advanced" },
-      { name: "C++ (DSA)", level: "Competitive" },
+    name: "Core Backend",
+    tags: [
+      { name: "Node.js", core: true },
+      { name: "TypeScript", core: true },
+      { name: "Express.js", core: true },
+      { name: "JavaScript" },
+      { name: "REST API Design" },
+      { name: "Microservices" },
+      { name: "Event-Driven Arch" },
+      { name: "System Design" },
+      { name: "Rate Limiting" },
     ],
   },
   {
-    heading: "Backend & Distributed Systems",
-    dot: "success",
-    items: [
-      { name: "Node.js / Express.js", level: "Expert" },
-      { name: "RabbitMQ / BullMQ / Kafka", level: "Production" },
-      { name: "Redis / Event-Driven Arch.", level: "Production" },
+    name: "Messaging & Queues",
+    tags: [
+      { name: "RabbitMQ", core: true },
+      { name: "BullMQ", core: true },
+      { name: "Redis", core: true },
+      { name: "Kafka" },
+      { name: "Dead Letter Queues" },
+      { name: "Distributed Workflows" },
+      { name: "Async Processing" },
     ],
   },
   {
-    heading: "Observability & Cloud",
-    dot: "muted",
-    items: [
-      { name: "Prometheus / Loki / Grafana", level: "Production" },
-      { name: "AWS (EC2, ECS, S3, Lambda)", level: "Advanced" },
-      { name: "Docker / GitHub Actions", level: "CI/CD" },
+    name: "Cloud & Infrastructure",
+    tags: [
+      { name: "AWS EC2 / ECS", core: true },
+      { name: "AWS S3" },
+      { name: "Lambda" },
+      { name: "Secrets Manager" },
+      { name: "Docker", core: true },
+      { name: "GitHub Actions" },
+      { name: "CI/CD Pipelines" },
+      { name: "Nginx" },
     ],
   },
-];
-
-export const skillsExtended: { heading: string; items: string[] }[] = [
   {
-    heading: "Databases & ORM",
-    items: ["PostgreSQL", "MySQL", "Prisma", "TypeORM", "Index design", "Query optimization"],
+    name: "Databases & ORM",
+    tags: [
+      { name: "PostgreSQL", core: true },
+      { name: "MySQL", core: true },
+      { name: "Prisma" },
+      { name: "TypeORM" },
+      { name: "Query Optimization" },
+      { name: "Index Design" },
+      { name: "Schema Design" },
+    ],
   },
   {
-    heading: "Testing",
-    items: ["Jest", "Supertest", "TDD", "Integration testing"],
+    name: "Observability & Testing",
+    tags: [
+      { name: "Prometheus", core: true },
+      { name: "Grafana", core: true },
+      { name: "Loki", core: true },
+      { name: "Jest" },
+      { name: "Supertest" },
+      { name: "TDD" },
+      { name: "Structured Logging" },
+      { name: "Integration Testing" },
+    ],
   },
   {
-    heading: "Frontend",
-    items: ["React.js", "Next.js", "Tailwind CSS"],
+    name: "Languages & Misc",
+    tags: [
+      { name: "TypeScript", core: true },
+      { name: "C++ (DSA / CP)" },
+      { name: "SQL" },
+      { name: "React.js" },
+      { name: "Next.js" },
+      { name: "Tailwind CSS" },
+      { name: "Go (learning)" },
+    ],
   },
 ];

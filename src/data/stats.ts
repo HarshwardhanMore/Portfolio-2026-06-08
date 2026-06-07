@@ -1,12 +1,8 @@
-export type Stat = {
-  value: string;
-  label: string;
-  highlight?: boolean;
-};
+export type Stat = { n: number; sfx: string; label: string };
 
 export const stats: Stat[] = [
-  { value: "~30%", label: "Latency Reduction", highlight: true },
-  { value: "8", label: "Microservices Shipped" },
-  { value: "7+", label: "Backend Systems Owned" },
-  { value: "85%+", label: "Test Coverage" },
+  { n: 2, sfx: "+", label: "Years production\nexperience" },
+  { n: 8, sfx: "+", label: "Microservices\narchitected & owned" },
+  { n: 30, sfx: "%", label: "API latency\nreduction achieved" },
+  { n: 85, sfx: "%+", label: "Test coverage\non core services" },
 ];
