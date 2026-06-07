@@ -1,5 +1,7 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
-import { Link } from "@tanstack/react-router";
+import Link from "next/link";
 import { profile } from "@/data/profile";
 
 const links = [
@@ -56,7 +58,7 @@ export function Navbar() {
         ))}
       </ul>
       <div className="nav-cta-group">
-        <Link to="/cli" className="nav-cli" aria-label="Open CLI mode">
+        <Link href="/cli" className="nav-cli" aria-label="Open CLI mode">
           <span>cli</span>
           <kbd>~</kbd>
         </Link>
