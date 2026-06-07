@@ -8,6 +8,7 @@ import { Experience } from "@/components/sections/Experience";
 import { Projects } from "@/components/sections/Projects";
 import { Skills } from "@/components/sections/Skills";
 import { Contact } from "@/components/sections/Contact";
+import { CustomCursor } from "@/components/CustomCursor";
 
 const TITLE = "Harshwardhan More — Backend Software Engineer";
 const DESC =
@@ -31,7 +32,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <div className="bg-bg text-zinc-300 font-sans selection:bg-portfolio-accent/30 selection:text-white min-h-screen">
+    <>
       <Navbar />
       <main>
         <Hero />
@@ -43,6 +44,7 @@ function Index() {
         <Contact />
       </main>
       <Footer />
-    </div>
+      <CustomCursor />
+    </>
   );
 }

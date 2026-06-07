@@ -1,13 +1,13 @@
-import { marqueeKeywords } from "@/data/marquee";
+import { marqueeItems } from "@/data/marquee";
 
 export function Marquee() {
-  const doubled = [...marqueeKeywords, ...marqueeKeywords];
+  const doubled = [...marqueeItems, ...marqueeItems];
   return (
-    <div className="border-y border-white/5 py-4 overflow-hidden">
-      <div className="animate-marquee gap-12 text-sm font-mono uppercase tracking-[0.3em] text-zinc-600">
-        {doubled.map((w, i) => (
-          <span key={i} className="px-6 whitespace-nowrap">
-            {w}
+    <div className="marquee" aria-hidden="true">
+      <div className="mtrack">
+        {doubled.map((m, i) => (
+          <span key={i} className={`mitem${m.accent ? " accent" : ""}`}>
+            {m.label}
           </span>
         ))}
       </div>

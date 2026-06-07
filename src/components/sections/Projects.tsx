@@ -1,46 +1,65 @@
+import { useEffect, useRef } from "react";
 import { projects } from "@/data/projects";
 
 export function Projects() {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!ref.current) return;
+    const items = ref.current.querySelectorAll<HTMLElement>(".pcard");
+    items.forEach((el, i) => {
+      el.style.transitionDelay = i * 0.14 + "s";
+    });
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("vis");
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.15 },
+    );
+    items.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
   return (
-    <section
-      id="projects"
-      className="max-w-6xl mx-auto px-6 py-24 bg-panel/50 rounded-3xl mb-24"
-    >
-      <h2 className="text-xs font-mono uppercase tracking-widest text-portfolio-accent mb-12 text-center">
-        Selected Systems
+    <section id="projects" className="psection">
+      <p className="slabel">Projects</p>
+      <h2 className="stitle">
+        Things I've
+        <br />
+        Built &amp; Shipped
       </h2>
-      <div className="grid md:grid-cols-2 gap-12">
+      <div className="pgrid" ref={ref}>
         {projects.map((p) => (
-          <a
-            key={p.name}
-            href={p.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group block"
-          >
-            <div className="w-full aspect-video bg-zinc-900 outline-1 -outline-offset-1 outline-white/5 rounded-xl overflow-hidden mb-6 group-hover:outline-portfolio-accent/50 transition-all">
-              <img
-                src={p.cover}
-                alt={`${p.name} — ${p.tag}`}
-                width={1280}
-                height={704}
-                loading="lazy"
-                className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
-              />
+          <div className="pcard" key={p.name}>
+            <div className="pnum">
+              {p.number} / {p.kind}
             </div>
-            <div className="font-mono text-[10px] uppercase tracking-widest text-zinc-500 mb-2">
-              {p.tag}
-            </div>
-            <h3 className="text-2xl font-bold text-white mb-2">{p.name}</h3>
-            <p className="text-zinc-400 mb-4 text-pretty">{p.description}</p>
-            <div className="flex flex-wrap gap-3 text-[10px] font-mono">
-              {p.stack.map((s) => (
-                <span key={s} className="px-2 py-1 bg-white/5 rounded text-zinc-400">
-                  {s}
-                </span>
+            <div className="pname">{p.name}</div>
+            <div className="psub">{p.subtitle}</div>
+            <p className="pdesc">{p.description}</p>
+            <ul className="phigs">
+              {p.highlights.map((h, i) => (
+                <li key={i} dangerouslySetInnerHTML={{ __html: h.html }} />
               ))}
+            </ul>
+            <div className="pfooter">
+              <div className="ptags">
+                {p.stack.map((s) => (
+                  <span key={s} className="ttag">
+                    {s}
+                  </span>
+                ))}
+              </div>
+              <a href={p.href} target="_blank" rel="noreferrer" className="plink">
+                GitHub →
+              </a>
             </div>
-          </a>
+          </div>
         ))}
       </div>
     </section>

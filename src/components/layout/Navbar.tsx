@@ -1,29 +1,62 @@
+import { useEffect, useRef, useState } from "react";
+import { profile } from "@/data/profile";
+
 const links = [
-  { href: "#experience", label: "Experience" },
+  { href: "#experience", label: "Work" },
   { href: "#projects", label: "Projects" },
-  { href: "#skills", label: "Stack" },
+  { href: "#skills", label: "Skills" },
   { href: "#contact", label: "Contact" },
 ];
 
 export function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+  const [active, setActive] = useState<string>("");
+  const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const sections = document.querySelectorAll<HTMLElement>("section[id]");
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) setActive("#" + e.target.id);
+        });
+      },
+      { threshold: 0.4 },
+    );
+    sections.forEach((s) => io.observe(s));
+    return () => io.disconnect();
+  }, []);
+
   return (
-    <nav className="sticky top-0 z-50 bg-bg/80 backdrop-blur-md border-b border-white/5">
-      <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        <a href="#top" className="font-mono text-sm font-bold tracking-tighter text-white">
-          HM_SYSTEMS
-        </a>
-        <div className="hidden md:flex gap-8 text-xs font-mono uppercase tracking-widest">
-          {links.map((l) => (
+    <nav id="nav" className={`pnav${scrolled ? " scrolled" : ""}`}>
+      <a href="#" className="nav-logo">
+        hm.dev
+      </a>
+      <ul className="nav-links">
+        {links.map((l) => (
+          <li key={l.href}>
             <a
-              key={l.href}
+              ref={(el) => {
+                linkRefs.current[l.href] = el;
+              }}
               href={l.href}
-              className="hover:text-portfolio-accent transition-colors"
+              style={active === l.href ? { color: "var(--color-paccent)" } : undefined}
             >
               {l.label}
             </a>
-          ))}
-        </div>
-      </div>
+          </li>
+        ))}
+      </ul>
+      <a href={`mailto:${profile.email}`} className="nav-cta">
+        Say Hello →
+      </a>
     </nav>
   );
 }

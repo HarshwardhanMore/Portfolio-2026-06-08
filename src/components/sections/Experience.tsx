@@ -1,41 +1,98 @@
+import { useEffect, useRef } from "react";
 import { experience } from "@/data/experience";
 
 export function Experience() {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!ref.current) return;
+    const items = ref.current.querySelectorAll<HTMLElement>(".titem");
+    items.forEach((el, i) => {
+      el.style.transitionDelay = i * 0.1 + "s";
+    });
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("vis");
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.15 },
+    );
+    items.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
   return (
-    <section id="experience" className="max-w-6xl mx-auto px-6 py-24">
-      <h2 className="text-xs font-mono uppercase tracking-widest text-portfolio-accent mb-12">
-        Execution History
+    <section id="experience" className="psection">
+      <p className="slabel">Experience</p>
+      <h2 className="stitle">
+        Where I've
+        <br />
+        Built Systems
       </h2>
-      <div className="space-y-16">
-        {experience.map((role) => (
-          <div key={role.title + role.period} className="relative pl-8 border-l border-white/10">
-            <div
-              className={`absolute -left-1.5 top-1 size-3 rounded-full ${
-                role.accent ? "bg-portfolio-accent" : "bg-white/20"
-              }`}
-            />
-            <div className="flex flex-col md:flex-row md:justify-between md:items-baseline mb-2 gap-1">
-              <h3 className="text-xl font-bold text-white">{role.title}</h3>
-              <span className="font-mono text-sm text-zinc-500">{role.period}</span>
+      <div className="timeline" ref={ref}>
+        {experience.map((item, i) => (
+          <div className="titem" key={i}>
+            <div className="tleft">
+              <div className="tco">
+                {item.company.split("\n").map((line, idx, arr) => (
+                  <span key={idx}>
+                    {line}
+                    {idx < arr.length - 1 && <br />}
+                  </span>
+                ))}
+              </div>
+              <div className="tdate">{item.date}</div>
+              {item.badge && <span className="tbadge">{item.badge}</span>}
             </div>
-            <p className="font-mono text-xs text-zinc-400 mb-5">{role.company}</p>
-            <ul className="space-y-3 text-zinc-400 text-pretty max-w-3xl">
-              {role.bullets.map((b, i) => (
-                <li key={i} className="leading-relaxed">
-                  <span className="text-portfolio-accent mr-3">›</span>
-                  {b}
-                </li>
-              ))}
-            </ul>
-            <div className="flex flex-wrap gap-2 mt-5">
-              {role.stack.map((s) => (
-                <span
-                  key={s}
-                  className="px-2 py-1 bg-white/5 rounded text-[10px] font-mono text-zinc-400"
+            <div className="tright">
+              <div className="trole">{item.role}</div>
+              {item.education?.note && (
+                <p
+                  style={{
+                    fontSize: 14,
+                    color: "var(--color-ptext-sec)",
+                    fontWeight: 300,
+                    marginBottom: 18,
+                  }}
                 >
-                  {s}
-                </span>
-              ))}
+                  {item.education.note}
+                </p>
+              )}
+              {item.points && (
+                <ul className="tpoints">
+                  {item.points.map((p, idx) => (
+                    <li key={idx} dangerouslySetInnerHTML={{ __html: p.html }} />
+                  ))}
+                </ul>
+              )}
+              {item.education?.gpa && (
+                <div className="edu-row">
+                  <div>
+                    <span className="edu-gpa">
+                      {item.education.gpa}
+                      <span>{item.education.gpaScale}</span>
+                    </span>
+                  </div>
+                  {item.education.location && (
+                    <div style={{ fontSize: 13, color: "var(--color-ptext-sec)" }}>
+                      {item.education.location}
+                    </div>
+                  )}
+                </div>
+              )}
+              {item.stack && (
+                <div className="tstack">
+                  {item.stack.map((s) => (
+                    <span key={s} className="ttag">
+                      {s}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         ))}
