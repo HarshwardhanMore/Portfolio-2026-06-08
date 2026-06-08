@@ -1,15 +1,22 @@
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
-import { Hero } from "@/components/sections/Hero";
-import { Marquee } from "@/components/sections/Marquee";
-import { Stats } from "@/components/sections/Stats";
-import { Experience } from "@/components/sections/Experience";
-import { Projects } from "@/components/sections/Projects";
-import { Skills } from "@/components/sections/Skills";
-import { Contact } from "@/components/sections/Contact";
-import { CustomCursor } from "@/components/CustomCursor";
+import { type ReactNode } from "react";
+import type { Metadata } from "next";
+import { Navbar } from "@/components/layout/navbar";
+import { Footer } from "@/components/layout/footer";
+import { Hero } from "@/components/sections/hero";
+import { Marquee } from "@/components/sections/marquee";
+import { Stats } from "@/components/sections/stats";
+import { Experience } from "@/components/sections/experience";
+import { Projects } from "@/components/sections/projects";
+import { Skills } from "@/components/sections/skills";
+import { Contact } from "@/components/sections/contact";
+import { CustomCursor } from "@/components/custom-cursor";
 
-export default function IndexPage() {
+export const metadata: Metadata = {
+  title: "Harshwardhan More — Backend Software Engineer",
+  description: "Portfolio of Harshwardhan More, a backend engineer specializing in Node.js microservices and distributed systems.",
+};
+
+export function IndexPage(): ReactNode {
   return (
     <>
       <Navbar />
@@ -27,3 +34,5 @@ export default function IndexPage() {
     </>
   );
 }
+
+export default IndexPage;

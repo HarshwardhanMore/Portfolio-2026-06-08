@@ -1,7 +1,8 @@
-import { profile } from "@/data/profile";
-import { Terminal } from "./Terminal";
+import { type ReactNode } from "react";
+import { profile } from "@/lib/data/profile";
+import { Terminal } from "./terminal";
 
-export function Hero() {
+export function Hero(): ReactNode {
   return (
     <section id="hero">
       <div>

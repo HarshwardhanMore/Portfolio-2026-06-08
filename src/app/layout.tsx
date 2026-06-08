@@ -1,6 +1,7 @@
+import { type ReactNode } from "react";
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import { HotkeyProvider } from "@/components/providers/HotkeyProvider";
+import { HotkeyProvider } from "@/components/providers/hotkey-provider";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -16,11 +17,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
-}) {
+  children: ReactNode;
+}): ReactNode {
   return (
     <html lang="en">
       <head>
@@ -41,3 +42,5 @@ export default function RootLayout({
     </html>
   );
 }
+
+export default RootLayout;

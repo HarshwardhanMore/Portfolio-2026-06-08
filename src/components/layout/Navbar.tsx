@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { profile } from "@/data/profile";
+import { profile } from "@/lib/data/profile";
 
 const links = [
   { href: "#experience", label: "Work" },
@@ -11,7 +11,7 @@ const links = [
   { href: "#contact", label: "Contact" },
 ];
 
-export function Navbar() {
+export function Navbar(): ReactNode {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState<string>("");
   const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({});

@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { experience } from "@/data/experience";
+import { type ReactNode, useEffect, useRef } from "react";
+import { experience } from "@/lib/data/experience";
 
-export function Experience() {
+export function Experience(): ReactNode {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -31,7 +31,7 @@ export function Experience() {
     <section id="experience" className="psection">
       <p className="slabel">Experience</p>
       <h2 className="stitle">
-        Where I've
+        Where I&apos;ve
         <br />
         Built Systems
       </h2>

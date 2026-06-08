@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
+import { type ReactNode, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 
-export function HotkeyProvider({ children }: { children: React.ReactNode }) {
+export function HotkeyProvider({ children }: { children: ReactNode }): ReactNode {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -11,7 +11,12 @@ export function HotkeyProvider({ children }: { children: React.ReactNode }) {
     const onKey = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement | null;
       const tag = target?.tagName;
-      if (tag === "INPUT" || tag === "TEXTAREA" || target?.isContentEditable) return;
+      if (
+        tag === "INPUT" ||
+        tag === "TEXTAREA" ||
+        target?.isContentEditable
+      )
+        return;
       if (e.key === "~" || (e.key === "`" && e.shiftKey)) {
         e.preventDefault();
         if (pathname === "/cli") {

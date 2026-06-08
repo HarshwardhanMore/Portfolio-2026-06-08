@@ -1,62 +1,56 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { stats } from "@/data/stats";
+import { type ReactNode, useEffect, useRef } from "react";
+import { stats } from "@/lib/data/stats";
 
-function animateCounter(el: HTMLElement, n: number, sfx: string) {
-  const numEl = el.querySelector<HTMLElement>(".snum");
-  if (!numEl) return;
-  const dur = 1400;
-  const t0 = performance.now();
-  const tick = (now: number) => {
-    const p = Math.min((now - t0) / dur, 1);
-    const e = 1 - Math.pow(1 - p, 3);
-    numEl.textContent = Math.floor(e * n) + (p >= 1 ? sfx : "");
-    if (p < 1) requestAnimationFrame(tick);
+function animateCounter(el: HTMLElement, n: number, sfx: string): void {
+  let count = 0;
+  const dur = 1000;
+  const start = performance.now();
+  const step = (now: number) => {
+    const prog = Math.min((now - start) / dur, 1);
+    count = Math.floor(prog * n);
+    el.textContent = count + sfx;
+    if (prog < 1) requestAnimationFrame(step);
   };
-  requestAnimationFrame(tick);
+  requestAnimationFrame(step);
 }
 
-export function Stats() {
+export function Stats(): ReactNode {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!ref.current) return;
-    const items = ref.current.querySelectorAll<HTMLElement>(".stat");
-    items.forEach((el, i) => {
-      el.style.transitionDelay = i * 0.08 + "s";
-    });
+    const items = ref.current.querySelectorAll(".stat");
     const io = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          const el = entry.target as HTMLElement;
-          el.classList.add("vis");
-          const n = Number(el.dataset.n);
-          const sfx = el.dataset.sfx || "";
-          if (!Number.isNaN(n)) animateCounter(el, n, sfx);
-          io.unobserve(el);
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("vis");
+            const num = e.target.querySelector(".snum") as HTMLElement;
+            if (num) {
+              const n = parseInt(num.dataset.val || "0");
+              const sfx = num.dataset.sfx || "";
+              animateCounter(num, n, sfx);
+            }
+            io.unobserve(e.target);
+          }
         });
       },
-      { threshold: 0.15 },
+      { threshold: 0.2 },
     );
-    items.forEach((el) => io.observe(el));
+    items.forEach((it) => io.observe(it));
     return () => io.disconnect();
   }, []);
 
   return (
     <div className="stats" ref={ref}>
       {stats.map((s, i) => (
-        <div key={i} className="stat" data-n={s.n} data-sfx={s.sfx}>
-          <div className="snum">0</div>
-          <div className="slbl">
-            {s.label.split("\n").map((line, idx, arr) => (
-              <span key={idx}>
-                {line}
-                {idx < arr.length - 1 && <br />}
-              </span>
-            ))}
+        <div className="stat" key={i}>
+          <div className="snum" data-val={s.n} data-sfx={s.sfx}>
+            0{s.sfx}
           </div>
+          <div className="slbl">{s.label}</div>
         </div>
       ))}
     </div>

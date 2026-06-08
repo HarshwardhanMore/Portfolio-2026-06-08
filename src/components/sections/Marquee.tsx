@@ -1,13 +1,14 @@
-import { marqueeItems } from "@/data/marquee";
+import { type ReactNode } from "react";
+import { marqueeItems } from "@/lib/data/marquee";
 
-export function Marquee() {
-  const doubled = [...marqueeItems, ...marqueeItems];
+export function Marquee(): ReactNode {
+  const items = [...marqueeItems, ...marqueeItems]; // Duplicate for infinite scroll
   return (
-    <div className="marquee" aria-hidden="true">
+    <div className="marquee">
       <div className="mtrack">
-        {doubled.map((m, i) => (
-          <span key={i} className={`mitem${m.accent ? " accent" : ""}`}>
-            {m.label}
+        {items.map((it, i) => (
+          <span key={i} className={`mitem ${it.accent ? "accent" : ""}`}>
+            {it.label}
           </span>
         ))}
       </div>

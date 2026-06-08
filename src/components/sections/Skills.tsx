@@ -1,17 +1,14 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { skillGroups } from "@/data/skills";
+import { type ReactNode, useEffect, useRef } from "react";
+import { skillGroups } from "@/lib/data/skills";
 
-export function Skills() {
+export function Skills(): ReactNode {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!ref.current) return;
-    const items = ref.current.querySelectorAll<HTMLElement>(".sgrp");
-    items.forEach((el, i) => {
-      el.style.transitionDelay = i * 0.07 + "s";
-    });
+    const groups = ref.current.querySelectorAll(".sgrp");
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
@@ -23,26 +20,29 @@ export function Skills() {
       },
       { threshold: 0.15 },
     );
-    items.forEach((el) => io.observe(el));
+    groups.forEach((g) => io.observe(g));
     return () => io.disconnect();
   }, []);
 
   return (
     <section id="skills" className="psection">
-      <p className="slabel">Technical Skills</p>
+      <p className="slabel">Stack</p>
       <h2 className="stitle">
-        Tools &amp;
+        Core Technologies
         <br />
-        Technologies
+        & Domain Expertise
       </h2>
       <div className="sgrid" ref={ref}>
-        {skillGroups.map((g) => (
-          <div className="sgrp" key={g.name}>
-            <div className="sgrpname">{g.name}</div>
+        {skillGroups.map((g, i) => (
+          <div className="sgrp" key={i}>
+            <h3 className="sgrpname">{g.name}</h3>
             <div className="stags">
-              {g.tags.map((t) => (
-                <span key={t.name} className={`stag${t.core ? " core" : ""}`}>
-                  {t.name}
+              {g.tags.map((s) => (
+                <span
+                  key={s.name}
+                  className={`stag ${s.core ? "core" : ""}`}
+                >
+                  {s.name}
                 </span>
               ))}
             </div>

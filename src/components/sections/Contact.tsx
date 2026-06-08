@@ -1,31 +1,38 @@
-import { profile } from "@/data/profile";
+import { type ReactNode } from "react";
+import { profile } from "@/lib/data/profile";
 
-export function Contact() {
+export function Contact(): ReactNode {
   return (
-    <section id="contact">
+    <section id="contact" className="psection">
       <div className="cinner">
         <h2 className="ctitle">
-          Let's Build
+          Let&apos;s Build <em>Something</em>
           <br />
-          <em>Something Great</em>
+          Exceptional
         </h2>
         <p className="cbody">
-          I'm actively exploring backend engineering roles with genuine ownership, rigorous
-          engineering culture, and real distributed-systems challenges. If that sounds like your
-          team, let's talk.
+          Currently open to <b>Senior Backend</b> or <b>Staff Engineer</b> roles where I
+          can lead architecture and mentor high-performing teams.
         </p>
         <a href={`mailto:${profile.email}`} className="cemail">
           {profile.email}
         </a>
         <div className="clinks">
-          <a href={profile.linkedin} target="_blank" rel="noreferrer" className="clink">
-            ↗ LinkedIn
+          <a
+            href={profile.github}
+            target="_blank"
+            rel="noreferrer"
+            className="clink"
+          >
+            GitHub ↗
           </a>
-          <a href={profile.github} target="_blank" rel="noreferrer" className="clink">
-            ↗ GitHub
-          </a>
-          <a href={`tel:${profile.phone}`} className="clink">
-            ↗ {profile.phone}
+          <a
+            href={profile.linkedin}
+            target="_blank"
+            rel="noreferrer"
+            className="clink"
+          >
+            LinkedIn ↗
           </a>
         </div>
       </div>

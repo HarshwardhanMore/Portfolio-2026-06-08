@@ -1,14 +1,21 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useRouter } from "next/navigation";
 import {
   registry,
   commandNames,
   closest,
   type OutputLine,
-} from "./commands";
-import { profile } from "@/data/profile";
+} from "@/lib/cli/commands";
+import { profile } from "@/lib/data/profile";
 
 type Block =
   | { kind: "prompt"; input: string }
@@ -17,11 +24,11 @@ type Block =
 const HOST = "harshmore";
 const USER = "visitor";
 
-function nowStr() {
+function nowStr(): string {
   return new Date().toUTCString().replace("GMT", "UTC");
 }
 
-export function Shell() {
+export function Shell(): ReactNode {
   const router = useRouter();
   const [blocks, setBlocks] = useState<Block[]>([]);
   const [input, setInput] = useState("");
@@ -266,7 +273,7 @@ export function Shell() {
   );
 }
 
-function escapeHtml(s: string) {
+function escapeHtml(s: string): string {
   return s.replace(/[&<>"']/g, (c) =>
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c] as string,
   );

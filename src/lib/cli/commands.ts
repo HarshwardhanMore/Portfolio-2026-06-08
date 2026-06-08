@@ -1,8 +1,8 @@
-import { profile } from "@/data/profile";
-import { experience } from "@/data/experience";
-import { projects } from "@/data/projects";
-import { skillGroups } from "@/data/skills";
-import { stats } from "@/data/stats";
+import { profile } from "@/lib/data/profile";
+import { experience } from "@/lib/data/experience";
+import { projects } from "@/lib/data/projects";
+import { skillGroups } from "@/lib/data/skills";
+import { stats } from "@/lib/data/stats";
 
 export type OutputLine =
   | { type: "text"; content: string; cls?: string }

@@ -1,17 +1,14 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { projects } from "@/data/projects";
+import { type ReactNode, useEffect, useRef } from "react";
+import { projects } from "@/lib/data/projects";
 
-export function Projects() {
+export function Projects(): ReactNode {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!ref.current) return;
-    const items = ref.current.querySelectorAll<HTMLElement>(".pcard");
-    items.forEach((el, i) => {
-      el.style.transitionDelay = i * 0.14 + "s";
-    });
+    const cards = ref.current.querySelectorAll(".pcard");
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
@@ -21,32 +18,30 @@ export function Projects() {
           }
         });
       },
-      { threshold: 0.15 },
+      { threshold: 0.1 },
     );
-    items.forEach((el) => io.observe(el));
+    cards.forEach((c) => io.observe(c));
     return () => io.disconnect();
   }, []);
 
   return (
     <section id="projects" className="psection">
-      <p className="slabel">Projects</p>
+      <p className="slabel">Portfolio</p>
       <h2 className="stitle">
-        Things I've
+        Scalable Solutions
         <br />
-        Built &amp; Shipped
+        Engineered for Production
       </h2>
       <div className="pgrid" ref={ref}>
-        {projects.map((p) => (
-          <div className="pcard" key={p.name}>
-            <div className="pnum">
-              {p.number} / {p.kind}
-            </div>
-            <div className="pname">{p.name}</div>
-            <div className="psub">{p.subtitle}</div>
+        {projects.map((p, i) => (
+          <div className="pcard" key={i}>
+            <div className="pnum">Project // 0{i + 1}</div>
+            <h3 className="pname">{p.name}</h3>
+            <p className="psub">{p.subtitle}</p>
             <p className="pdesc">{p.description}</p>
             <ul className="phigs">
-              {p.highlights.map((h, i) => (
-                <li key={i} dangerouslySetInnerHTML={{ __html: h.html }} />
+              {p.highlights.map((h, j) => (
+                <li key={j} dangerouslySetInnerHTML={{ __html: h }} />
               ))}
             </ul>
             <div className="pfooter">
@@ -57,8 +52,13 @@ export function Projects() {
                   </span>
                 ))}
               </div>
-              <a href={p.href} target="_blank" rel="noreferrer" className="plink">
-                GitHub →
+              <a
+                href={p.href}
+                target="_blank"
+                rel="noreferrer"
+                className="plink"
+              >
+                Repo ↗
               </a>
             </div>
           </div>

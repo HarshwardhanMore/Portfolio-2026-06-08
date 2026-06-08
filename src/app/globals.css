@@ -1246,3 +1246,10 @@ footer.pfooter-bar {
   .nav-cli kbd { display: none; }
   .nav-cli { padding: 6px 10px; }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

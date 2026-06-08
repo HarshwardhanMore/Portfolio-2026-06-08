@@ -1,14 +1,18 @@
-import { Shell } from "@/features/cli/Shell";
+import { type ReactNode } from "react";
+import type { Metadata } from "next";
+import { Shell } from "./_components/shell";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "CLI Mode — Harshwardhan More",
   description: "An interactive terminal interface to explore Harshwardhan More's backend engineering portfolio.",
 };
 
-export default function CliPage() {
+export function CliPage(): ReactNode {
   return (
     <main className="cli-page">
       <Shell />
     </main>
   );
 }
+
+export default CliPage;
