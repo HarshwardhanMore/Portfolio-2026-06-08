@@ -32,12 +32,22 @@ export function Shell(): ReactNode {
   const router = useRouter();
   const [blocks, setBlocks] = useState<Block[]>([]);
   const [input, setInput] = useState("");
+  const [cursorIdx, setCursorIdx] = useState(0);
   const [history, setHistory] = useState<string[]>([]);
   const [histIdx, setHistIdx] = useState<number>(-1);
   const [hint, setHint] = useState<string>("");
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
   const bootedRef = useRef(false);
+
+  const syncCursor = useCallback(() => {
+    // Delay to ensure DOM has updated
+    setTimeout(() => {
+      if (inputRef.current) {
+        setCursorIdx(inputRef.current.selectionStart || 0);
+      }
+    }, 0);
+  }, []);
 
   const pushOut = useCallback((lines: OutputLine[]) => {
     setBlocks((b) => [...b, { kind: "out", lines }]);
@@ -129,7 +139,7 @@ export function Shell(): ReactNode {
     setHint(m ? m.slice(input.length) : "");
   }, [input]);
 
-  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
       const v = input;
@@ -139,6 +149,7 @@ export function Shell(): ReactNode {
       }
       setHistIdx(-1);
       setInput("");
+      setCursorIdx(0);
       return;
     }
     if (e.key === "ArrowUp") {
@@ -146,7 +157,9 @@ export function Shell(): ReactNode {
       if (!history.length) return;
       const next = histIdx < 0 ? history.length - 1 : Math.max(0, histIdx - 1);
       setHistIdx(next);
-      setInput(history[next] ?? "");
+      const val = history[next] ?? "";
+      setInput(val);
+      setCursorIdx(val.length);
       return;
     }
     if (e.key === "ArrowDown") {
@@ -156,9 +169,12 @@ export function Shell(): ReactNode {
       if (next >= history.length) {
         setHistIdx(-1);
         setInput("");
+        setCursorIdx(0);
       } else {
         setHistIdx(next);
-        setInput(history[next]);
+        const val = history[next];
+        setInput(val);
+        setCursorIdx(val.length);
       }
       return;
     }
@@ -167,7 +183,9 @@ export function Shell(): ReactNode {
       if (!input) return;
       const matches = commandNames.filter((n) => n.startsWith(input.toLowerCase()));
       if (matches.length === 1) {
-        setInput(matches[0] + " ");
+        const val = matches[0] + " ";
+        setInput(val);
+        setCursorIdx(val.length);
       } else if (matches.length > 1) {
         pushOut([{ type: "html", content: matches.map((m) => `<span class="cli-key">${m}</span>`).join("  ") }]);
       }
@@ -182,6 +200,7 @@ export function Shell(): ReactNode {
       e.preventDefault();
       setBlocks((b) => [...b, { kind: "prompt", input: input + "^C" }]);
       setInput("");
+      setCursorIdx(0);
       return;
     }
     if (e.key === "Escape") {
@@ -189,6 +208,7 @@ export function Shell(): ReactNode {
       exitShell();
       return;
     }
+    syncCursor();
   };
 
   const ps1 = useMemo(
@@ -246,28 +266,34 @@ export function Shell(): ReactNode {
             </div>
           ),
         )}
-        <form
-          className="cli-line cli-active"
-          onSubmit={(e) => e.preventDefault()}
-        >
+        <div className="cli-line cli-active">
           {ps1}
-          <span className="cli-input-wrap">
-            <input
+          <div className="cli-input-wrap">
+            <span className="cli-input-echo">
+              {input.slice(0, cursorIdx)}
+              <span className="cli-caret" />
+              {input.slice(cursorIdx)}
+              {hint && <span className="cli-ghost">{hint}</span>}
+            </span>
+            <textarea
               ref={inputRef}
               className="cli-input"
               value={input}
-              onChange={(e) => setInput(e.target.value)}
+              rows={1}
+              onChange={(e) => {
+                setInput(e.target.value);
+                setCursorIdx(e.target.selectionStart || 0);
+              }}
               onKeyDown={onKeyDown}
+              onSelect={() => syncCursor()}
               autoComplete="off"
               autoCorrect="off"
               autoCapitalize="off"
               spellCheck={false}
               aria-label="Terminal input"
             />
-            {hint && <span className="cli-ghost">{hint}</span>}
-            <span className="cli-caret" />
-          </span>
-        </form>
+          </div>
+        </div>
       </div>
     </div>
   );

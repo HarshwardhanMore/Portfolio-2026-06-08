@@ -40,7 +40,7 @@ export function Navbar(): ReactNode {
   return (
     <nav id="nav" className={`pnav${scrolled ? " scrolled" : ""}`}>
       <a href="#" className="nav-logo">
-        hm.dev
+        harshmore.dev
       </a>
       <ul className="nav-links">
         {links.map((l) => (
