@@ -1278,3 +1278,45 @@ footer.pfooter-bar {
   animation: blink 1s step-end infinite;
   box-shadow: 0 0 8px rgba(0, 230, 118, 0.4);
 }
+
+  flex: 1;
+  display: inline-block;
+  min-width: 0;
+}
+.cli-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: transparent;
+  font-family: var(--font-mono);
+  font-size: inherit;
+  line-height: inherit;
+  caret-color: transparent;
+  padding: 0;
+  z-index: 2;
+  resize: none;
+  overflow: hidden;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+.cli-ghost {
+  color: var(--color-ptext-mut);
+  font-family: var(--font-mono);
+  font-size: inherit;
+}
+.cli-caret {
+  display: inline-block;
+  width: 8px;
+  height: 1.15em;
+  background: var(--color-paccent);
+  vertical-align: middle;
+  margin-top: -0.15em;
+  animation: blink 1s step-end infinite;
+  box-shadow: 0 0 8px rgba(0, 230, 118, 0.4);
+}
