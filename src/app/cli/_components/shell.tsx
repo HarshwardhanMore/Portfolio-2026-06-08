@@ -219,7 +219,7 @@ export function Shell(): ReactNode {
         <span className="cli-host">{HOST}</span>
         <span className="cli-dim">:</span>
         <span className="cli-path">~</span>
-        <span className="cli-dim">$ </span>
+        <span className="cli-dim">$&nbsp;</span>
       </span>
     ),
     [],
